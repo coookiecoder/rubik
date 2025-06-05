@@ -61,7 +61,7 @@ fn main() {
             continue;
         }
 
-        for _index in 0..number_move.parse::<i32>().unwrap() {
+        for index in 0..number_move.parse::<i32>().unwrap() {
             match letter_move.as_str() {
                 "U" => cube.up(),
                 "U’" => cube.up_prime(),
@@ -84,12 +84,12 @@ fn main() {
                 _ => { println!("Unknown move: {}", cube_move); std::process::exit(1) }
             }
 
-            println!("did move {} {} times now", letter_move, number_move.parse::<i32>().unwrap());
+            println!("did move {} {} times now", letter_move, index + 1);
         }
     }
 
     print!("{}", cube);
-    
+
     if cube.solved() {
         print!("cube solved");
         std::process::exit(1);
