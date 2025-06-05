@@ -1,8 +1,11 @@
 mod cube;
 mod color;
+mod move_table;
+mod coordinate_compute;
+mod pruning_table;
 
 use cube::Cube;
-use color::Color;
+use cube::Move;
 
 fn main() {
     let args: Vec<String> = std::env::args().collect();
@@ -12,14 +15,7 @@ fn main() {
         std::process::exit(1);
     }
 
-    let mut cube = Cube{
-        front: vec![Color::Blue; 9],
-        back: vec![Color::Green; 9],
-        right: vec![Color::Red; 9],
-        left: vec![Color::Orange; 9],
-        top: vec![Color::Yellow; 9],
-        bottom: vec![Color::White; 9],
-    };
+    let mut cube = Cube::new_solved();
 
     for cube_move in args[1].split_whitespace() {
         let mut number_move = String::new();
@@ -33,65 +29,27 @@ fn main() {
             }
         }
 
+        let movement = Move::from_str(letter_move.clone());
+
+        if movement == Move::None {
+            eprintln!("Invalid move: {}", letter_move);
+            std::process::exit(1);
+        }
+
         if number_move.is_empty() {
-            match letter_move.as_str() {
-                "U" => cube.up(),
-                "U’" => cube.up_prime(),
-
-                "D" => cube.down(),
-                "D’" => cube.down_prime(),
-
-                "R" => cube.right(),
-                "R’" => cube.right_prime(),
-
-                "L" => cube.left(),
-                "L’" => cube.left_prime(),
-
-                "F" => cube.front(),
-                "F’" => cube.front_prime(),
-
-                "B" => cube.back(),
-                "B’" => cube.back_prime(),
-
-                _ => { println!("Unknown move: {}", cube_move); std::process::exit(1) }
-            }
-
-            println!("did move {} 1 times now", letter_move);
+            cube.apply_move(&movement);
 
             continue;
         }
 
-        for index in 0..number_move.parse::<i32>().unwrap() {
-            match letter_move.as_str() {
-                "U" => cube.up(),
-                "U’" => cube.up_prime(),
-
-                "D" => cube.down(),
-                "D’" => cube.down_prime(),
-
-                "R" => cube.right(),
-                "R’" => cube.right_prime(),
-
-                "L" => cube.left(),
-                "L’" => cube.left_prime(),
-
-                "F" => cube.front(),
-                "F’" => cube.front_prime(),
-
-                "B" => cube.back(),
-                "B’" => cube.back_prime(),
-
-                _ => { println!("Unknown move: {}", cube_move); std::process::exit(1) }
-            }
-
-            println!("did move {} {} times now", letter_move, index + 1);
+        for _index in 0..number_move.parse::<i32>().unwrap() {
+            cube.apply_move(&movement);
         }
     }
 
-    print!("{}", cube);
-
-    if cube.solved() {
-        print!("cube solved");
-        std::process::exit(1);
+    if cube.is_solved() {
+        std::process::exit(0);
     }
+
+    //cube.solve();
 }
