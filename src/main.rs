@@ -89,4 +89,9 @@ fn main() {
     }
 
     print!("{}", cube);
+    
+    if cube.solved() {
+        print!("cube solved");
+        std::process::exit(1);
+    }
 }

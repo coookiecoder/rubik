@@ -38,22 +38,7 @@ fn rotate_face_cw(face: &mut Vec<Color>) {
     face[8] = old[2];
 }
 
-fn rotate_face_ccw(face: &mut Vec<Color>) {
-    let old = face.clone();
-    face[0] = old[2];
-    face[1] = old[5];
-    face[2] = old[8];
-    face[3] = old[1];
-    face[4] = old[4];
-    face[5] = old[7];
-    face[6] = old[0];
-    face[7] = old[3];
-    face[8] = old[6];
-}
-
-
 impl Cube {
-    // U (Up face clockwise)
     pub fn up(&mut self) {
         rotate_face_cw(&mut self.top);
 
@@ -63,15 +48,13 @@ impl Cube {
         self.back[0..3].copy_from_slice(&self.left[0..3]);
         self.left[0..3].copy_from_slice(&temp);
     }
-
-    // U' (Up face counterclockwise)
+    
     pub fn up_prime(&mut self) {
         self.up();
         self.up();
         self.up();
     }
-
-    // D (Down face clockwise)
+    
     pub fn down(&mut self) {
         rotate_face_cw(&mut self.bottom);
 
@@ -81,15 +64,13 @@ impl Cube {
         self.back[6..9].copy_from_slice(&self.right[6..9]);
         self.right[6..9].copy_from_slice(&temp);
     }
-
-    // D' (Down face counterclockwise)
+    
     pub fn down_prime(&mut self) {
         self.down();
         self.down();
         self.down();
     }
-
-    // R (Right face clockwise)
+    
     pub fn right(&mut self) {
         rotate_face_cw(&mut self.right);
 
@@ -110,15 +91,13 @@ impl Cube {
         self.back[3] = temp[1];
         self.back[0] = temp[2];
     }
-
-    // R' (Right face counterclockwise)
+    
     pub fn right_prime(&mut self) {
         self.right();
         self.right();
         self.right();
     }
-
-    // L (Left face clockwise)
+    
     pub fn left(&mut self) {
         rotate_face_cw(&mut self.left);
 
@@ -139,15 +118,13 @@ impl Cube {
         self.front[3] = temp[1];
         self.front[6] = temp[2];
     }
-
-    // L' (Left face counterclockwise)
+    
     pub fn left_prime(&mut self) {
         self.left();
         self.left();
         self.left();
     }
-
-    // F (Front face clockwise)
+    
     pub fn front(&mut self) {
         rotate_face_cw(&mut self.front);
 
@@ -168,15 +145,13 @@ impl Cube {
         self.right[3] = temp[1];
         self.right[6] = temp[0];
     }
-
-    // F' (Front face counterclockwise)
+    
     pub fn front_prime(&mut self) {
         self.front();
         self.front();
         self.front();
     }
-
-    // B (Back face clockwise)
+    
     pub fn back(&mut self) {
         rotate_face_cw(&mut self.back);
 
@@ -197,11 +172,57 @@ impl Cube {
         self.left[3] = temp[1];
         self.left[6] = temp[0];
     }
-
-    // B' (Back face counterclockwise)
+    
     pub fn back_prime(&mut self) {
         self.back();
         self.back();
         self.back();
+    }
+    
+    pub fn solved(&mut self) -> bool {
+        let mut buffer:Color = self.front[0];
+        
+        for face in &self.front {
+            if buffer != *face {
+                return false;
+            }
+        }
+
+        buffer = self.back[0];
+        for face in &self.back {
+            if buffer != *face {
+                return false;
+            }
+        }
+        
+        buffer = self.right[0];
+        for face in &self.right {
+            if buffer != *face {
+                return false;
+            }
+        }
+        
+        buffer = self.left[0];
+        for face in &self.left {
+            if buffer != *face {
+                return false;
+            }
+        }
+        
+        buffer = self.top[0];
+        for face in &self.top {
+            if buffer != *face {
+                return false;
+            }
+        }
+        
+        buffer = self.bottom[0];
+        for face in &self.bottom {
+            if buffer != *face {
+                return false;
+            }
+        }
+        
+        return true;
     }
 }
