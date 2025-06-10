@@ -10,4 +10,5 @@ add_executable(rubik main.cpp
         Class/Cube/Cube.hpp
         ida.cpp
         ida.hpp
+        Class/Cube/MoveTable.hpp
         Class/Cube/MoveTable.hpp)

@@ -1,63 +1,19 @@
 #ifndef MOVETABLE_HPP
 #define MOVETABLE_HPP
 
-struct MoveTable {
-    int cp[8];
-    int co[8];
-    int ep[12];
-    int eo[12];
-};
-
-// Identity move (for initialization)
-const MoveTable MOVE_ID = {
-    {0,1,2,3,4,5,6,7},  // cp
-    {0,0,0,0,0,0,0,0},  // co
-    {0,1,2,3,4,5,6,7,8,9,10,11}, // ep
-    {0,0,0,0,0,0,0,0,0,0,0,0}    // eo
-};
-
-const MoveTable MOVE_U = {
-    {3, 0, 1, 2, 4, 5, 6, 7},
-    {0, 0, 0, 0, 0, 0, 0, 0},
-    {3, 0, 1, 2, 4, 5, 6, 7, 8, 9, 10, 11},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
-};
-
-const MoveTable MOVE_D = {
-    {0,1,2,3,5,6,7,4},
-    {0,0,0,0,0,0,0,0},
-    {0,1,2,3,5,6,7,4,8,9,10,11},
-    {0,0,0,0,0,0,0,0,0,0,0,0}
-};
-
-const MoveTable MOVE_F = {
-    {4,0,2,3,5,1,6,7},
-    {1,2,0,0,1,2,0,0},
-    {0,9,2,3,4,8,6,7,1,5,10,11},
-    {0,1,0,0,0,1,0,0,1,1,0,0}
-};
-
-const MoveTable MOVE_B = {
-    {0,1,3,7,4,5,2,6},
-    {0,0,1,2,0,0,1,2},
-    {0,1,2,11,4,5,6,10,8,9,3,7},
-    {0,0,0,1,0,0,0,1,0,0,1,1}
-};
-
-const MoveTable MOVE_L = {
-    {0,5,1,3,4,6,2,7},
-    {0,1,2,0,0,1,2,0},
-    {0,1,10,3,4,5,9,7,8,2,6,11},
-    {0,0,1,0,0,0,1,0,0,1,1,0}
-};
-
-const MoveTable MOVE_R = {
-    {4, 1, 2, 0, 7, 5, 6, 3},
-    {2, 0, 0, 1, 1, 0, 0, 2},
-    {8, 1, 2, 3, 11, 5, 6, 7, 4, 9, 10, 0},
-    {1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1}
-};
-
-const MoveTable MOVE_TABLES[6] = {MOVE_U, MOVE_D, MOVE_L, MOVE_B, MOVE_F, MOVE_R};
+//aceletMove: array [U..B] of Facelet = (
+//(U3,U6,U9,U2,U5,U8,U1,U4,U7,F1,F2,F3,R4,R5,R6,R7,R8,R9,L1,L2,L3,F4,F5,F6,F7,F8,F9,
+//U D1,D2,D3,D4,D5,D6,D7,D8,D9,B1,B2,B3,L4,L5,L6,L7,L8,L9,R1,R2,R3,B4,B5,B6,B7,B8,B9),
+//(U1,U2,B7,U4,U5,B4,U7,U8,B1,R3,R6,R9,R2,R5,R8,R1,R4,R7,F1,F2,U3,F4,F5,U6,F7,F8,U9,
+//R D1,D2,F3,D4,D5,F6,D7,D8,F9,L1,L2,L3,L4,L5,L6,L7,L8,L9,D9,B2,B3,D6,B5,B6,D3,B8,B9),
+//(U1,U2,U3,U4,U5,U6,R1,R4,R7,D3,R2,R3,D2,R5,R6,D1,R8,R9,F3,F6,F9,F2,F5,F8,F1,F4,F7,
+//F L3,L6,L9,D4,D5,D6,D7,D8,D9,L1,L2,U9,L4,L5,U8,L7,L8,U7,B1,B2,B3,B4,B5,B6,B7,B8,B9),
+//(U1,U2,U3,U4,U5,U6,U7,U8,U9,R1,R2,R3,R4,R5,R6,B7,B8,B9,F1,F2,F3,F4,F5,F6,R7,R8,R9,
+//D D3,D6,D9,D2,D5,D8,D1,D4,D7,L1,L2,L3,L4,L5,L6,F7,F8,F9,B1,B2,B3,B4,B5,B6,L7,L8,L9),
+//(F1,U2,U3,F4,U5,U6,F7,U8,U9,R1,R2,R3,R4,R5,R6,R7,R8,R9,D1,F2,F3,D4,F5,F6,D7,F8,F9,
+//L B9,D2,D3,B6,D5,D6,B3,D8,D9,L3,L6,L9,L2,L5,L8,L1,L4,L7,B1,B2,U7,B4,B5,U4,B7,B8,U1),
+//(L7,L4,L1,U4,U5,U6,U7,U8,U9,R1,R2,U1,R4,R5,U2,R7,R8,U3,F1,F2,F3,F4,F5,F6,F7,F8,F9,
+//B D1,D2,D3,D4,D5,D6,R9,R6,R3,D7,L2,L3,D8,L5,L6,D9,L8,L9,B3,B6,B9,B2,B5,B8,B1,B4,B7)
+//);
 
 #endif

@@ -3,7 +3,6 @@
 #include <vector>
 #include <iostream>
 
-#include "ida.hpp"
 #include "Class/Cube/Cube.hpp"
 
 void convert(const std::string& string, std::vector<std::string>& moves) {
@@ -46,10 +45,6 @@ int main(const int argc, const char **argv) {
     }
 
     std::cout << cube << std::endl;
-
-    ida_start(cube, static_cast<int>(moves.size()));
-
-    //std::cout << cube << std::endl;
 
     return 0;
 }
