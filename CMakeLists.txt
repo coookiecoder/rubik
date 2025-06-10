@@ -7,4 +7,7 @@ set(CMAKE_CXX_STANDARD 20)
 
 add_executable(rubik main.cpp
         Class/Cube/Cube.cpp
-        Class/Cube/Cube.hpp)
+        Class/Cube/Cube.hpp
+        ida.cpp
+        ida.hpp
+        Class/Cube/MoveTable.hpp)

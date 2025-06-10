@@ -3,6 +3,7 @@
 #include <vector>
 #include <iostream>
 
+#include "ida.hpp"
 #include "Class/Cube/Cube.hpp"
 
 void convert(const std::string& string, std::vector<std::string>& moves) {
@@ -34,10 +35,10 @@ int main(const int argc, const char **argv) {
     Cube cube;
 
     for (auto move : moves) {
-        auto it = moveMap.find(move);
+        auto it = moveMap.find(move[0]);
 
         if (it != moveMap.end())
-            cube.applyMove(it->second);
+            cube.applyMove(it->second, move[1]);
         else {
             std::cerr << "Invalid move : " << move << std::endl;
             return 1;
@@ -45,6 +46,10 @@ int main(const int argc, const char **argv) {
     }
 
     std::cout << cube << std::endl;
+
+    ida_start(cube, static_cast<int>(moves.size()));
+
+    //std::cout << cube << std::endl;
 
     return 0;
 }
