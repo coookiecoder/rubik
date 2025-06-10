@@ -12,10 +12,6 @@ void convert(const std::string& string, std::vector<std::string>& moves) {
     while (moves_stream >> move) {
         std::cout << "Move found : \"" << move << "\"" << std::endl;
 
-        if (move.size() > 2) {
-            throw std::invalid_argument("Invalid move : " + move);
-        }
-
         moves.push_back(move);
     }
 }
@@ -38,11 +34,11 @@ int main(const int argc, const char **argv) {
     Cube cube;
 
     for (auto move : moves) {
-        auto it = moveMap.find(move.c_str());
+        auto it = moveMap.find(move);
 
         if (it != moveMap.end())
             cube.applyMove(it->second);
-        else {
+        else if (move.empty() == false) {
             std::cerr << "Invalid move : " << move << std::endl;
             return 1;
         }
