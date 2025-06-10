@@ -22,7 +22,7 @@ int main(const int argc, const char **argv) {
         return 1;
     }
 
-    std::vector<std::string> moves(argc - 1);
+    std::vector<std::string> moves;
 
     try {
         convert(argv[1], moves);
@@ -38,7 +38,7 @@ int main(const int argc, const char **argv) {
 
         if (it != moveMap.end())
             cube.applyMove(it->second);
-        else if (move.empty() == false) {
+        else {
             std::cerr << "Invalid move : " << move << std::endl;
             return 1;
         }
